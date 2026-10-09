@@ -365,3 +365,20 @@ Follow this checklist step-by-step:
 2. **Clinical metric priorities:** Learning why 90% accuracy with low recall is a dangerous model in healthcare.
 3. **Scikit-Learn Pipeline unification:** Packaging preprocessing + model into one artifact so your FastAPI app never suffers from train/serving skew.
 
+
+---
+
+## 11. What Was Just Completed (Selected Model & Streamlit)
+
+1. **Model Training & Fixes (`src/train.py`):**
+   * Installed `xgboost` and fixed import typos.
+   * Performed `GridSearchCV` on Logistic Regression, Random Forest, and **XGBoost**.
+   * **Selected Model:** The script evaluated multiple classifiers and dynamically selects the best based on **Cross-Validation Recall**. In our latest run, the **Random Forest Classifier** outperformed the others and was selected as the final production model.
+   * Extracted an optimal decision threshold optimized for the **F1-score** to balance Precision and Recall.
+   * Saved both the fitted pipeline and the custom threshold securely as a dictionary to `models/heart_model.pkl`.
+
+2. **Unified Streamlit Application (`app.py`):**
+   * Simplified the architecture from a separate FastAPI backend to a single, unified Streamlit application (`app.py`).
+   * Fixed critical pipeline mismatch errors where categorical features (like `"Male"` or `"typical angina"`) were being sent as integers, crashing NumPy with `isnan` type-casting errors. 
+   * Matched the exact spelling of dataset features (e.g., `thalach` corrected to `thalch`) ensuring seamless interaction with the trained `OneHotEncoder` and `ColumnTransformer`.
+   * **To run:** `streamlit run app.py` (accessible at `http://localhost:8501`).
